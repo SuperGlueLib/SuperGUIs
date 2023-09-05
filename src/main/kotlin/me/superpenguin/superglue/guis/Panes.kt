@@ -25,4 +25,10 @@ object Panes {
     val BROWN by lazy { pane(Material.BROWN_STAINED_GLASS_PANE) }
     val BLACK by lazy { pane(Material.BLACK_STAINED_GLASS_PANE) }
 
+    private val allPanes = listOf(
+        CLEAR, WHITE, YELLOW, ORANGE, RED, LIME, GREEN, CYAN, BLUE, LIGHT_BLUE,
+        MAGENTA, PINK, PURPLE , LIGHT_GRAY, GRAY, BROWN, BLACK
+    )
+
+    fun random() = allPanes.random()
 }

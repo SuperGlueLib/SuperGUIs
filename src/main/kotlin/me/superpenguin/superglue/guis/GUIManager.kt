@@ -22,12 +22,12 @@ object GUIManager: Listener {
         this.register(plugin)
     }
 
-
-    val openGUIs = HashMap<UUID, GUI>()
+    internal val openGUIs = HashMap<UUID, GUI>()
 
     fun hasOpenInventory(player: Player) = openGUIs.containsKey(player.uniqueId)
     fun getGUI(player: HumanEntity) = openGUIs[player.uniqueId]
 
+    fun Player.closeGUI() = closeGUI(this)
     fun closeGUI(player: Player) {
         Bukkit.getScheduler().runTaskLater(plugin, Runnable { player.closeInventory() }, 1)
     }

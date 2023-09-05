@@ -1,4 +1,4 @@
-package me.superpenguin.superglue.guis
+package com.github.supergluelib.guis
 
 import me.superpenguin.superglue.foundations.util.ItemBuilder
 import org.bukkit.Material

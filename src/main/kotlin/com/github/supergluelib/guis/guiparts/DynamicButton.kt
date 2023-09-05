@@ -1,6 +1,6 @@
-package me.superpenguin.superglue.guis.guiparts
+package com.github.supergluelib.guis.guiparts
 
-import me.superpenguin.superglue.guis.GUI
+import com.github.supergluelib.guis.GUI
 import org.bukkit.inventory.ItemStack
 
 /**

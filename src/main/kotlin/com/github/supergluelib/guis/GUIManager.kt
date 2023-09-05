@@ -1,4 +1,4 @@
-package me.superpenguin.superglue.guis
+package com.github.supergluelib.guis
 
 import me.superpenguin.superglue.foundations.register
 import org.bukkit.Bukkit
@@ -18,7 +18,7 @@ object GUIManager: Listener {
     fun getPlugin() = runCatching { plugin }.getOrElse { throw UninitializedPropertyAccessException("You must call GUIManager.setup() in your onEnable!") }
 
     fun setup(plugin: JavaPlugin) {
-        this.plugin = plugin
+        GUIManager.plugin = plugin
         this.register(plugin)
     }
 

@@ -1,15 +1,15 @@
-package me.superpenguin.superglue.guis
+package com.github.supergluelib.guis
 
 import me.superpenguin.superglue.foundations.isValid
 import me.superpenguin.superglue.foundations.toColor
 import me.superpenguin.superglue.foundations.util.ItemBuilder
-import me.superpenguin.superglue.guis.guiparts.Button
-import me.superpenguin.superglue.guis.guiparts.Button.Companion.getId
-import me.superpenguin.superglue.guis.guiparts.Button.Companion.isButton
-import me.superpenguin.superglue.guis.guiparts.DynamicButton
-import me.superpenguin.superglue.guis.types.CloseEvent
-import me.superpenguin.superglue.guis.types.ForceKeepOpen
-import me.superpenguin.superglue.guis.types.OpenEvent
+import com.github.supergluelib.guis.guiparts.Button
+import com.github.supergluelib.guis.guiparts.Button.Companion.getId
+import com.github.supergluelib.guis.guiparts.Button.Companion.isButton
+import com.github.supergluelib.guis.guiparts.DynamicButton
+import com.github.supergluelib.guis.types.CloseEvent
+import com.github.supergluelib.guis.types.ForceKeepOpen
+import com.github.supergluelib.guis.types.OpenEvent
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player

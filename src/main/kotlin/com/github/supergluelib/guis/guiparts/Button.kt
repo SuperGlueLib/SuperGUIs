@@ -1,7 +1,7 @@
-package me.superpenguin.superglue.guis.guiparts
+package com.github.supergluelib.guis.guiparts
 
-import me.superpenguin.superglue.guis.GUI
-import me.superpenguin.superglue.guis.GUIManager
+import com.github.supergluelib.guis.GUI
+import com.github.supergluelib.guis.GUIManager
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -18,7 +18,7 @@ open class Button(
     override fun getItem() = itemstack.applyID(id)
     override fun onClick(action: (GUI.ClickData.() -> Unit)?) = apply { onClick = action }
 
-    protected fun ItemStack.applyID(id: Int) = apply { Companion.applyID(this, id) }
+    protected fun ItemStack.applyID(id: Int) = apply { applyID(this, id) }
 
     companion object {
         private val buttonkey = NamespacedKey(GUIManager.getPlugin(), "buttonkey")

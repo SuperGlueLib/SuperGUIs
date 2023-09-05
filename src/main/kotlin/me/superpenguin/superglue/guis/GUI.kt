@@ -1,7 +1,7 @@
 package me.superpenguin.superglue.guis
 
 import me.superpenguin.superglue.foundations.isValid
-import me.superpenguin.superglue.foundations.toColour
+import me.superpenguin.superglue.foundations.toColor
 import me.superpenguin.superglue.foundations.util.ItemBuilder
 import me.superpenguin.superglue.guis.guiparts.Button
 import me.superpenguin.superglue.guis.guiparts.Button.Companion.getId
@@ -42,7 +42,7 @@ abstract class GUI {
     private var inventory: Inventory? = null
 
     private var backslot: Int? = null
-    var backgui: GUI? = null
+    private var backgui: GUI? = null
     private var requireTopInventory = true
 
     fun requiresClickTopInventory() = requireTopInventory
@@ -78,13 +78,16 @@ abstract class GUI {
     }
 
     // Builder methods
-    // TODO This method might need a rethink (maybe with refresh() function?)
-    protected fun setBackButton(slot: Int, gui: GUI) = apply { this.backslot = slot }.apply { this.backgui = gui }
-    protected fun requireTopInventory(require: Boolean = true) = apply { this.requireTopInventory = require }
+    fun setBackButton(slot: Int, gui: GUI) = apply {
+        this.backslot = slot
+        this.backgui = gui
+    }
 
-    // public methods
+    fun requireTopInventory(require: Boolean = true) = apply { this.requireTopInventory = require }
 
-    fun runClick(player: Player, item: ItemStack, event: InventoryClickEvent) {
+    // manager methods
+
+    internal fun runClick(player: Player, item: ItemStack, event: InventoryClickEvent) {
         val clickdata = ClickData(player, item, event)
         if (isBackButton(item) && this.backgui != null) backgui!!.open(player).also { return }
         if (item.isButton()) {
@@ -95,6 +98,8 @@ abstract class GUI {
         }
         onClick(clickdata)
     }
+
+    // Public methods
 
     /**
      * Refreshes the inventory value by invalidating the inventory of all current viewers by overriding the existing inventory.
@@ -147,7 +152,7 @@ abstract class GUI {
     )
 
     // Utility methods
-    fun createInventory(name: String, size: Int, display: Inventory.() -> Unit) = Bukkit.createInventory(null, size, name.toColour()).apply(display)
+    fun createInventory(name: String, size: Int, display: Inventory.() -> Unit) = Bukkit.createInventory(null, size, name.toColor()).apply(display)
     fun easyGUI(name: String, size: Int, inventory: Inventory.() -> Unit) = object: GUI() {
         override fun generateInventory(): Inventory {
             return createInventory(name, size, inventory)
@@ -201,11 +206,10 @@ abstract class GUI {
         val old = getItem(slot)
         setItem(slot, item)
         temporaryTasks.add(Bukkit.getScheduler().runTaskLater(GUIManager.getPlugin(), Runnable {
-            if( this@GUI.inventory == null ) return@Runnable
+            if( this.viewers.size == 0 ) return@Runnable
             setItem(slot, old)
         }, ticks.toLong()))
     }
-
 
     // Cached objects
     companion object {

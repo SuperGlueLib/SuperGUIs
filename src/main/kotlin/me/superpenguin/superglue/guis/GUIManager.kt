@@ -27,8 +27,8 @@ object GUIManager: Listener {
     fun hasOpenInventory(player: Player) = openGUIs.containsKey(player.uniqueId)
     fun getGUI(player: HumanEntity) = openGUIs[player.uniqueId]
 
-    fun Player.closeGUI() = closeGUI(this)
-    fun closeGUI(player: Player) {
+    fun Player.closeGUI() = closeGui(this)
+    fun closeGui(player: Player) {
         Bukkit.getScheduler().runTaskLater(plugin, Runnable { player.closeInventory() }, 1)
     }
 

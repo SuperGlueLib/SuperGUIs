@@ -3,6 +3,10 @@ package me.superpenguin.superglue.guis.guiparts
 import me.superpenguin.superglue.guis.GUI
 import org.bukkit.inventory.ItemStack
 
+/**
+ * Dynamic buttons act like regular buttons only the item in their place is automatically updated
+ * via the [generateItem] function every time they are clicked,
+ */
 class DynamicButton(
     id: Int,
     private val generateItem: () -> ItemStack,

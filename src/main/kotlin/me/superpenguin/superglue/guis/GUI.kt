@@ -23,16 +23,12 @@ import org.bukkit.scheduler.BukkitTask
 import java.util.*
 
 /*
-
-Apparently Dynamic buttons dont update on click properly
+TODO
 add a re-open method which refreshes and re-opens
 add a close-for-all method which closes the inventory for all viewers, safely.
-add ability to set buttons to multiple slots, put emphasis on button constructor by having button.setIn(inv, slot) and inv.setButton(slot, () -> Button)
+add ability to set buttons to multiple slots
 ability to set dynamic button to multiple slots, ties in with above ^
-add item.setToInv and ItemBuilder.setToInv both returning the item so it can be chained.
-make most guimanager methods private
-add player.closeGUI extension method.
-Can onClick be used with a scoping inside a data class containing locname etc.?
+setLiveButton -- Polls the function every second until the inventory is closed.
 
 ---- PAGE SUPPORT ----
  */
@@ -56,7 +52,7 @@ abstract class GUI {
         if (this is OpenEvent) this.onOpen(player)
     }, 1)
 
-    fun onClose(player: Player) {
+    internal fun onClose(player: Player) {
         // Usually only run if the player closes inventory manually.
         if (this is ForceKeepOpen && !canClose(player) && !navigating.contains(player.uniqueId)) open(player).also { return }  // Re-opens gui if not allowed to close
 //        runOnClose(player)
@@ -85,6 +81,7 @@ abstract class GUI {
     fun requireTopInventory(require: Boolean = true) = apply { this.requireTopInventory = require }
 
     // manager methods
+    private fun isBackButton(item: ItemStack) = item.itemMeta?.localizedName?.equals("return") == true
 
     internal fun runClick(player: Player, item: ItemStack, event: InventoryClickEvent) {
         val clickdata = ClickData(player, item, event)
@@ -100,22 +97,24 @@ abstract class GUI {
 
     // Public methods
 
-    /**
+    // These are disabled for now because they don't work all that great
+/*    *//**
      * Refreshes the inventory value by invalidating the inventory of all current viewers by overriding the existing inventory.
      * Will only take effect on re-open, for an instant effect, use #refreshContents
      *
      * @see refreshContents
-     */
+     *//*
     fun refresh() = apply { inventory = getInventory() }
 
-    /**
+    *//**
      * - Regenerates and broadcasts an inventory update to all current viewers.
      * - Is optimised to reduce flickering on high ping by only broadcasting changes to modified items
      * - If using a dynamically sized inventory use #refresh() and then re-open the inventory.
      * - You should also use #refresh() and re-open if the inventory contains buttons that are supplied outside of the generateInventory method, such as in the onOpen
      *
      * @see refresh
-     */
+     *//*
+    @Deprecated("This is highly highly unstable and not recommenkded.")
     fun refreshContents() {
         if (inventory == null) return
         val newinv = getInventory()
@@ -128,7 +127,7 @@ abstract class GUI {
                 if (existingitem != newitem) inventory!!.setItem(i, newitem)
             }
         }
-    }
+    }*/
 
     // Abstract methods
     protected abstract fun generateInventory(): Inventory
@@ -158,15 +157,14 @@ abstract class GUI {
         }
     }
 
-
-    private fun isBackButton(item: ItemStack) = item.itemMeta?.localizedName?.equals("return") == true
-
     // Inventory creation utilities
     private val buttons = HashMap<Int, Button>()
 
     private fun ItemStack.getButton() = buttons[getId()]
 
     /**
+     * Creates and places a [Button]
+     *
      * @param action The action to execute **when this button is clicked**
      */
     protected fun Inventory.setButton(slot: Int, item: ItemStack, action: ClickData.() -> Unit): Button {
@@ -178,6 +176,9 @@ abstract class GUI {
         return button
     }
 
+    /**
+     * Creates and places a [DynamicButton]
+     */
     protected fun Inventory.setDynamicButton(slot: Int, item: () -> ItemStack): DynamicButton {
         val button = DynamicButton(buttons.size, item)
         buttons[button.id] = button
@@ -187,9 +188,23 @@ abstract class GUI {
         return button
     }
 
-    // Set next for adding sequential buttons
+    /**
+     * Creates and places a GUI Button, otherwise known as a navigation button.
+     * Clicking on this button opens the [gui]
+     * @param slot the slot to place this button at
+     * @param item the item to put in the slot
+     * @param gui the gui to take the player too
+     */
     protected fun Inventory.setGUIButton(slot: Int, item: ItemBuilder, gui: () -> GUI) = setGUIButton(slot, item.build(), gui)
+    /**
+     * Creates and places a GUI Button, otherwise known as a navigation button.
+     * Clicking on this button opens the [gui]
+     * @param slot the slot to place this button at
+     * @param item the item to put in the slot
+     * @param gui the gui to take the player too
+     */
     protected fun Inventory.setGUIButton(slot: Int, item: ItemStack, gui: () -> GUI) = setButton(slot, item) { gui.invoke().open(player) }
+
     /**
      * Create a new GUI class on the spot!
      * @param slot the slot to place the button in
@@ -201,6 +216,14 @@ abstract class GUI {
         setGUIButton(slot, item) { easyGUI(name, size, display) }
 
     private val temporaryTasks = ArrayList<BukkitTask>()
+
+    /**
+     * Temporarily sets this slot to the temporary [item] passed and then sets it back to the itemstack present when it was clicked.
+     *
+     * @param slot the slot to change
+     * @param ticks the amount of ticks to change the item for
+     * @param item the item to change this slot to
+     */
     protected fun Inventory.setTemporaryButton(slot: Int, ticks: Int, item: ItemStack) {
         val old = getItem(slot)
         setItem(slot, item)
@@ -212,8 +235,6 @@ abstract class GUI {
 
     // Cached objects
     companion object {
-
-
         val AIR = ItemStack(Material.AIR)
         val RETURN = ItemBuilder(Material.BARRIER).name("&c&lBACK").locname("return").build()
 

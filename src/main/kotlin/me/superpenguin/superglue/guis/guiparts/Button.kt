@@ -6,6 +6,9 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
+/**
+ * Represents an item in a gui which has a specific click function.
+ */
 open class Button(
     id: Int,
     itemstack: ItemStack,

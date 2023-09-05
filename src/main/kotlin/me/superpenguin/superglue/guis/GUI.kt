@@ -30,7 +30,6 @@ add a close-for-all method which closes the inventory for all viewers, safely.
 add ability to set buttons to multiple slots, put emphasis on button constructor by having button.setIn(inv, slot) and inv.setButton(slot, () -> Button)
 ability to set dynamic button to multiple slots, ties in with above ^
 add item.setToInv and ItemBuilder.setToInv both returning the item so it can be chained.
-replace certain inventory calls like setBorder etc. with .apply{} versions so they can be chained.
 make most guimanager methods private
 add player.closeGUI extension method.
 Can onClick be used with a scoping inside a data class containing locname etc.?
@@ -91,7 +90,7 @@ abstract class GUI {
         val clickdata = ClickData(player, item, event)
         if (isBackButton(item) && this.backgui != null) backgui!!.open(player).also { return }
         if (item.isButton()) {
-            val button = item.getButton() ?: throw NullPointerException("Found an untracked button in a gui")
+            val button = item.getButton() ?: throw NullPointerException("Found an untracked button in a gui, this is usually a bug, join the discord for support")
             button.onClick?.invoke(clickdata)
             if (button is DynamicButton && button.updateOnClick) event.clickedInventory?.setItem(event.slot, button.getItem())
             return

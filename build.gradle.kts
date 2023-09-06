@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
-    implementation("com.github.SuperGlueLib:SuperFoundations:8ec859478a")
+    api("com.github.SuperGlueLib:SuperFoundations:00987a6676")
 }
 
 kotlin {

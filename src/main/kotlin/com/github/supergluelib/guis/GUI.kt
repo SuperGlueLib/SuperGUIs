@@ -10,6 +10,7 @@ import com.github.supergluelib.guis.guiparts.DynamicButton
 import com.github.supergluelib.guis.types.CloseEvent
 import com.github.supergluelib.guis.types.ForceKeepOpen
 import com.github.supergluelib.guis.types.OpenEvent
+import me.superpenguin.superglue.foundations.connectToBungeeServer
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -231,6 +232,19 @@ abstract class GUI {
             if( this.viewers.size == 0 ) return@Runnable
             setItem(slot, old)
         }, ticks.toLong()))
+    }
+
+    /**
+     * When clicked, connects the player to the proxy server named [serverName]
+     *
+     * @param slot the slot to put the item in
+     * @param item the item to set the slot to
+     * @param serverName the name of the server to connect the player to
+     */
+    protected fun Inventory.setServerConnectionButton(slot: Int, item: ItemStack, serverName: String): Button {
+        return setButton(slot, item) {
+            player.connectToBungeeServer(GUIManager.getPlugin(), serverName)
+        }
     }
 
     // Cached objects

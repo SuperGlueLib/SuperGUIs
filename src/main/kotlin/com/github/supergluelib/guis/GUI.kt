@@ -157,6 +157,7 @@ abstract class GUI {
             return createInventory(name, size, inventory)
         }
     }
+    fun closeForAllViewers() = inventory?.viewers?.forEach { GUIManager.closeGui(it as Player) }
 
     // Inventory creation utilities
     private val buttons = HashMap<Int, Button>()

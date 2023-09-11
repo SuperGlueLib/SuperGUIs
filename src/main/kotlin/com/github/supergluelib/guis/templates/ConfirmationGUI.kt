@@ -1,6 +1,7 @@
 package com.github.supergluelib.guis.templates
 
 import com.github.supergluelib.guis.GUI
+import com.github.supergluelib.guis.GUIManager
 import com.github.supergluelib.guis.Panes
 import com.github.supergluelib.guis.setColumns
 import com.github.supergluelib.guis.types.CloseEvent
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player
  *      clarifying what the player is confirming.
  */
 class ConfirmationGUI(val lore: List<String>? = null, val onSelect: (Boolean) -> Unit): GUI(), CloseEvent {
+    var closeOnClick = true
 
     override fun generateInventory() = createInventory("&aConfirm", 27) {
         val middlepane = ItemBuilder(Material.BLACK_STAINED_GLASS_PANE, "&r")
@@ -28,10 +30,12 @@ class ConfirmationGUI(val lore: List<String>? = null, val onSelect: (Boolean) ->
 
         setButton(10, ItemBuilder(Material.GREEN_WOOL, "&a&lCONFIRM").build()) {
             onSelect.invoke(true)
+            if (closeOnClick) closeForAllViewers()
         }
 
         setButton(16, ItemBuilder(Material.RED_WOOL, "&c&lCANCEL").build()) {
             onSelect.invoke(false)
+            if (closeOnClick) closeForAllViewers()
         }
     }
 

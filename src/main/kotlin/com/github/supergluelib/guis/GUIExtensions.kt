@@ -14,10 +14,27 @@ fun Inventory.getSlots() = (0 until size)
 
 /** @return the amount of rows this inventory has */
 fun Inventory.getRows() = size/9
-/** Sets each item in the [row] */
+
+/** Sets each item in the [row]
+ *  @param row starting at 0
+ */
 fun Inventory.setRow(row: Int, item: ItemStack) =  setItems(item, ((9*row)until (9*row+9)))
-/** Sets each item in the [column] */
+
+/** Sets each item in each of the [rows]
+ * @param rows starting at 0
+ */
+fun Inventory.setRows(item: ItemStack, vararg rows: Int) = rows.forEach { setRow(it, item) }
+
+/** Sets each item in the [column]
+ * @param column starting at 0
+ */
 fun Inventory.setColumn(column: Int, item: ItemStack) = setItems(item, (column until size step 9))
+
+/** Sets each item in each of the [columns]
+ * @param columns starting at 0
+ */
+fun Inventory.setColumns(item: ItemStack, vararg columns: Int) = columns.forEach { setColumn(it, item) }
+
 /** Sets the borders (outline) of the inventory to [item] */
 fun Inventory.setBorder(item: ItemStack) = apply {
     setRow(0, item)

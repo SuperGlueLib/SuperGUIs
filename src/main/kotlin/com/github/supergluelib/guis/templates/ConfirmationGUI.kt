@@ -5,6 +5,7 @@ import com.github.supergluelib.guis.GUIManager
 import com.github.supergluelib.guis.Panes
 import com.github.supergluelib.guis.setColumns
 import com.github.supergluelib.guis.types.CloseEvent
+import me.superpenguin.superglue.foundations.toColor
 import me.superpenguin.superglue.foundations.util.ItemBuilder
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -21,7 +22,7 @@ class ConfirmationGUI(val lore: List<String>? = null, val onSelect: (Boolean) ->
 
     override fun generateInventory() = createInventory("&aConfirm", 27) {
         val middlepane = ItemBuilder(Material.BLACK_STAINED_GLASS_PANE, "&r")
-            .lore(lore ?: listOf())
+            .lore((lore ?: listOf()).map(String::toColor))
             .build()
 
         setColumns(Panes.LIME, 0, 1, 2)

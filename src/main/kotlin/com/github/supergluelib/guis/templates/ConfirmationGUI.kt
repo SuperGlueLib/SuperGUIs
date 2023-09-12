@@ -19,6 +19,7 @@ import org.bukkit.entity.Player
  */
 class ConfirmationGUI(val lore: List<String>? = null, val onSelect: (Boolean) -> Unit): GUI(), CloseEvent {
     var closeOnClick = true
+    private var clicked = false
 
     override fun generateInventory() = createInventory("&aConfirm", 27) {
         val middlepane = ItemBuilder(Material.BLACK_STAINED_GLASS_PANE, "&r")
@@ -30,17 +31,19 @@ class ConfirmationGUI(val lore: List<String>? = null, val onSelect: (Boolean) ->
         setColumns(Panes.RED, 6, 7, 8)
 
         setButton(10, ItemBuilder(Material.GREEN_WOOL, "&a&lCONFIRM").build()) {
+            clicked = true
             onSelect.invoke(true)
             if (closeOnClick) closeForAllViewers()
         }
 
         setButton(16, ItemBuilder(Material.RED_WOOL, "&c&lCANCEL").build()) {
+            clicked = true
             onSelect.invoke(false)
             if (closeOnClick) closeForAllViewers()
         }
     }
 
     override fun whenClosed(player: Player) {
-        onSelect.invoke(false)
+        if (!clicked) onSelect.invoke(false)
     }
 }

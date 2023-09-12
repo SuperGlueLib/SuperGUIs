@@ -22,7 +22,7 @@ class ConfirmationGUI(val lore: List<String>? = null, val onSelect: (Boolean) ->
     private var clicked = false
 
     override fun generateInventory() = createInventory("&aConfirm", 27) {
-        val middlepane = ItemBuilder(Material.BLACK_STAINED_GLASS_PANE, "&r")
+        val middlepane = ItemBuilder(Material.BLACK_STAINED_GLASS_PANE, "&7Confirmation")
             .lore((lore ?: listOf()).map(String::toColor))
             .build()
 

@@ -1,6 +1,6 @@
 package com.github.supergluelib.guis
 
-import me.superpenguin.superglue.foundations.util.ItemBuilder
+import com.github.supergluelib.foundation.util.ItemBuilder
 import org.bukkit.Material
 
 object Panes {

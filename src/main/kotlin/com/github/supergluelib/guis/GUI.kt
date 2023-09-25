@@ -1,8 +1,9 @@
 package com.github.supergluelib.guis
 
-import me.superpenguin.superglue.foundations.isValid
-import me.superpenguin.superglue.foundations.toColor
-import me.superpenguin.superglue.foundations.util.ItemBuilder
+import com.github.supergluelib.foundation.connectToBungeeServer
+import com.github.supergluelib.foundation.isValid
+import com.github.supergluelib.foundation.toColor
+import com.github.supergluelib.foundation.util.ItemBuilder
 import com.github.supergluelib.guis.guiparts.Button
 import com.github.supergluelib.guis.guiparts.Button.Companion.getId
 import com.github.supergluelib.guis.guiparts.Button.Companion.isButton
@@ -10,7 +11,6 @@ import com.github.supergluelib.guis.guiparts.DynamicButton
 import com.github.supergluelib.guis.types.CloseEvent
 import com.github.supergluelib.guis.types.ForceKeepOpen
 import com.github.supergluelib.guis.types.OpenEvent
-import me.superpenguin.superglue.foundations.connectToBungeeServer
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player

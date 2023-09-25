@@ -1,6 +1,7 @@
 package com.github.supergluelib.guis
 
-import me.superpenguin.superglue.foundations.register
+import com.github.supergluelib.foundation.Runnables
+import com.github.supergluelib.foundation.register
 import org.bukkit.Bukkit
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
@@ -20,6 +21,7 @@ object GUIManager: Listener {
     fun setup(plugin: JavaPlugin) {
         GUIManager.plugin = plugin
         this.register(plugin)
+        Runnables.setup(plugin)
     }
 
     internal val openGUIs = HashMap<UUID, GUI>()

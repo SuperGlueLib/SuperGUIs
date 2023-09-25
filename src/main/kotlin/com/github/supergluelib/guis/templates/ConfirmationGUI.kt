@@ -1,12 +1,11 @@
 package com.github.supergluelib.guis.templates
 
+import com.github.supergluelib.foundation.toColor
+import com.github.supergluelib.foundation.util.ItemBuilder
 import com.github.supergluelib.guis.GUI
-import com.github.supergluelib.guis.GUIManager
 import com.github.supergluelib.guis.Panes
 import com.github.supergluelib.guis.setColumns
 import com.github.supergluelib.guis.types.CloseEvent
-import me.superpenguin.superglue.foundations.toColor
-import me.superpenguin.superglue.foundations.util.ItemBuilder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 

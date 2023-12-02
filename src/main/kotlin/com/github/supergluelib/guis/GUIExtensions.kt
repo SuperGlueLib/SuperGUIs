@@ -53,8 +53,11 @@ fun Inventory.setItems(item: ItemStack, vararg slots: Int) = slots.forEach { set
 /** Sets each slot in [slots] to [item]. */
 fun Inventory.setItems(item: ItemStack, slots: Iterable<Int>) = slots.forEach { setItem(it, item) }
 
+/** Set the item in the given slot */
 fun Inventory.setItem(slot: Int, item: () -> ItemStack) = setItem(slot, item.invoke())
+/** Set the item in the given slot to the item represented by the supplied item builder */
 fun Inventory.setItemBuilder(slot: Int, itemBuilder: () -> ItemBuilder) = setItem(slot, itemBuilder.invoke().build())
+/** Set the item in the given slot to the item represented by the supplied item builder */
 fun Inventory.setItemBuilder(slot: Int, item: ItemBuilder) = setItem(slot, item.build())
 
 fun Inventory.getNextAvailableSlot(startingAt: Int = 0) = (startingAt until size).first { isSlotEmpty(it) }

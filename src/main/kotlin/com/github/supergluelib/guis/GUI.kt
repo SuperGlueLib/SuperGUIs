@@ -27,7 +27,6 @@ import java.util.*
 TODO
 add a re-open method which refreshes and re-opens
 add a close-for-all method which closes the inventory for all viewers, safely.
-add ability to set buttons to multiple slots
 ability to set dynamic button to multiple slots, ties in with above ^
 setLiveButton -- Polls the function every second until the inventory is closed.
 
@@ -176,6 +175,25 @@ abstract class GUI {
         buttons[key] = button
         setItem(slot, button.getItem())
         return button
+    }
+
+    /**
+     * Creates and places multiple individual [Button]s at all the designated slots.
+     *
+     * @param action The action to execute **when these buttons are clicked**
+     */
+    protected fun Inventory.setButtons(item: ItemStack, vararg slots: Int, action: ClickData.() -> Unit): List<Button> {
+        if (!item.isValid()) throw NullPointerException("Invalid Item passed into `setButtons` method for slots ${slots.joinToString()}")
+        var key = buttons.size
+        val newButtons = mutableListOf<Button>()
+        for (slot in slots) {
+            val button = Button(key, item, action)
+            buttons[key] = button
+            newButtons.add(button)
+            setItem(slot, item)
+            key++
+        }
+        return newButtons
     }
 
     /**

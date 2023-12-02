@@ -1,6 +1,7 @@
 package com.github.supergluelib.guis
 
 import com.github.supergluelib.foundation.Runnables
+import com.github.supergluelib.foundation.clickedTopInventory
 import com.github.supergluelib.foundation.register
 import org.bukkit.Bukkit
 import org.bukkit.entity.HumanEntity
@@ -38,11 +39,11 @@ object GUIManager: Listener {
     fun onClick(event: InventoryClickEvent) {
         if (!hasOpenInventory(event.whoClicked as Player)) return
         if (event.currentItem == null || event.currentItem!!.type.isAir) return
-        getGUI(event.whoClicked)
-            ?.also {
-                if (event.clickedTopInventory() || !it.requiresClickTopInventory()) it.runClick(event.whoClicked as Player, event.currentItem!!, event)
-                event.isCancelled = true
-            }
+        val click = GUI.ClickData(event.whoClicked as Player, event.currentItem!!, event)
+        getGUI(event.whoClicked)?.let {
+            if (it.settings.shouldCancel(click)) event.isCancelled = true
+            if (event.clickedTopInventory() || !it.settings.requireTopInventory) it.runClick(click)
+        }
     }
 
     @EventHandler

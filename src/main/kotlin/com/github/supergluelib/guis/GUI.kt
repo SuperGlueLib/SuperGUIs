@@ -38,9 +38,32 @@ abstract class GUI {
 
     private var backslot: Int? = null
     private var backgui: GUI? = null
-    private var requireTopInventory = true
+    val settings = Settings()
 
-    fun requiresClickTopInventory() = requireTopInventory
+    /**
+     * @param requireTopInventory Require the top inventory to be clicked before running any on-click or button code.
+     * @param cancelAutomatically Should all clicks be cancelled by default
+     * @param notCancelledSlots Raw slots that will not cause the event to be automatically cancelled regardless of [cancelAutomatically]
+     * @param shouldCancel Overrides all the other settings regarding whether to cancel an event when not null.
+     */
+    data class Settings(
+        var requireTopInventory: Boolean = true,
+        var cancelAutomatically: Boolean = true,
+        var notCancelledSlots: List<Int> = listOf(),
+        var shouldCancel: (ClickData.() -> Boolean)? = null
+    ) {
+        /**
+         * Determines whether a click event will be cancelled based on the GUI settings.
+         */
+        fun shouldCancel(click: ClickData) = shouldCancel?.invoke(click) ?:
+            (requireTopInventory && !click.event.clickedTopInventory()) || (cancelAutomatically && click.event.rawSlot !in notCancelledSlots)
+    }
+
+    // Builder methods
+    fun setBackButton(slot: Int, gui: GUI) = apply {
+        this.backslot = slot
+        this.backgui = gui
+    }
 
     // Manager methods
     fun open(player: Player) = Bukkit.getScheduler().runTaskLater(GUIManager.getPlugin(), Runnable {
@@ -72,19 +95,13 @@ abstract class GUI {
         return inv
     }
 
-    // Builder methods
-    fun setBackButton(slot: Int, gui: GUI) = apply {
-        this.backslot = slot
-        this.backgui = gui
-    }
-
-    fun requireTopInventory(require: Boolean = true) = apply { this.requireTopInventory = require }
-
     // manager methods
     private fun isBackButton(item: ItemStack) = item.itemMeta?.localizedName?.equals("return") == true
 
-    internal fun runClick(player: Player, item: ItemStack, event: InventoryClickEvent) {
-        val clickdata = ClickData(player, item, event)
+    internal fun runClick(clickdata: ClickData) {
+        val item = clickdata.item
+        val player = clickdata.player
+        val event = clickdata.event
         if (isBackButton(item) && this.backgui != null) backgui!!.open(player).also { return }
         if (item.isButton()) {
             val button = item.getButton() ?: throw NullPointerException("Found an untracked button in a gui, this is usually a bug, join the discord for support")

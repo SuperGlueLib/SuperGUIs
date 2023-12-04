@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.github.supergluelib"
-version = "0.1.0"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
-    api("com.github.SuperGlueLib:SuperFoundations:690f8a94c2")
+    api("com.github.SuperGlueLib:SuperFoundations:1.3.0")
 }
 
 kotlin {

@@ -1,6 +1,6 @@
 package com.github.supergluelib.guis
 
-import com.github.supergluelib.foundation.connectToBungeeServer
+import com.github.supergluelib.foundation.PluginMessager.connectToBungeeServer
 import com.github.supergluelib.foundation.isValid
 import com.github.supergluelib.foundation.toColor
 import com.github.supergluelib.foundation.util.ItemBuilder
@@ -280,7 +280,7 @@ abstract class GUI {
      */
     protected fun Inventory.setServerConnectionButton(slot: Int, item: ItemStack, serverName: String): Button {
         return setButton(slot, item) {
-            player.connectToBungeeServer(GUIManager.getPlugin(), serverName)
+            player.connectToBungeeServer(serverName)
         }
     }
 

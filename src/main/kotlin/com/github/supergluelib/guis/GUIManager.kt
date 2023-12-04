@@ -1,6 +1,6 @@
 package com.github.supergluelib.guis
 
-import com.github.supergluelib.foundation.Runnables
+import com.github.supergluelib.foundation.Foundations
 import com.github.supergluelib.foundation.clickedTopInventory
 import com.github.supergluelib.foundation.register
 import org.bukkit.Bukkit
@@ -22,7 +22,7 @@ object GUIManager: Listener {
     fun setup(plugin: JavaPlugin) {
         GUIManager.plugin = plugin
         this.register(plugin)
-        Runnables.setup(plugin)
+        Foundations.setup(plugin)
     }
 
     internal val openGUIs = HashMap<UUID, GUI>()

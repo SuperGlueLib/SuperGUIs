@@ -208,7 +208,7 @@ abstract class GUI {
             val button = Button(key, item, action)
             buttons[key] = button
             newButtons.add(button)
-            setItem(slot, item)
+            setItem(slot, button.getItem())
             key++
         }
         return newButtons

@@ -90,6 +90,7 @@ abstract class GUI {
 
     private fun getInventory(): Inventory {
         buttons.clear()
+        temporaryTasks.onEach { it.cancel() }.clear()
         val inv = generateInventory()
         if (backslot != null) inv.setItem(backslot!!, RETURN)
         return inv
@@ -114,37 +115,18 @@ abstract class GUI {
 
     // Public methods
 
-    // These are disabled for now because they don't work all that great
-/*    *//**
-     * Refreshes the inventory value by invalidating the inventory of all current viewers by overriding the existing inventory.
-     * Will only take effect on re-open, for an instant effect, use #refreshContents
-     *
-     * @see refreshContents
-     *//*
-    fun refresh() = apply { inventory = getInventory() }
-
-    *//**
-     * - Regenerates and broadcasts an inventory update to all current viewers.
-     * - Is optimised to reduce flickering on high ping by only broadcasting changes to modified items
-     * - If using a dynamically sized inventory use #refresh() and then re-open the inventory.
-     * - You should also use #refresh() and re-open if the inventory contains buttons that are supplied outside of the generateInventory method, such as in the onOpen
-     *
-     * @see refresh
-     *//*
-    @Deprecated("This is highly highly unstable and not recommenkded.")
-    fun refreshContents() {
-        if (inventory == null) return
+    // GUI Management Methods?
+    protected fun redraw() {
         val newinv = getInventory()
-        for (i in 0 until inventory!!.size) {
-            val existingitem = inventory!!.getItem(i)
-            val newitem = newinv.getItem(i)
-            if ((existingitem == null && newitem != null) || (existingitem != null && newitem == null)) {
-                inventory!!.setItem(i, newitem)
-            } else if (newitem != null && existingitem != null) {
-                if (existingitem != newitem) inventory!!.setItem(i, newitem)
+        for (i in 0..<inventory!!.size) {
+            val existing = inventory!!.getItem(i)
+            val new = newinv.getItem(i)
+            if (existing?.equals(new) != true) {
+                inventory!!.setItem(i, new)
             }
         }
-    }*/
+    }
+
 
     // Abstract methods
     protected abstract fun generateInventory(): Inventory

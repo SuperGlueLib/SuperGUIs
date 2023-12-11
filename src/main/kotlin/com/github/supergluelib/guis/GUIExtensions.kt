@@ -52,6 +52,18 @@ fun Inventory.isSlotEmpty(slot: Int) = getItem(slot)?.type?.isAir != false
 fun Inventory.setItems(item: ItemStack, vararg slots: Int) = slots.forEach { setItem(it, item) }
 /** Sets each slot in [slots] to [item]. */
 fun Inventory.setItems(item: ItemStack, slots: Iterable<Int>) = slots.forEach { setItem(it, item) }
+/** Sets the [item] every [increment] slots for [reps] amount of times */
+fun Inventory.setItemIncrementally(item: ItemStack, slot: Int, increment: Int, reps: Int) {
+    var times = 0
+    var slot = slot
+    while (times <= reps && slot < size) {
+        setItem(slot, item)
+        times++
+        slot += increment
+    }
+}
+/** Sets the item at the specific row and column ( starting at 0 ) */
+fun Inventory.setItem(row: Int, column: Int, item: ItemStack) = setItem(( row * 9 ) + column, item)
 
 /** Set the item in the given slot */
 fun Inventory.setItem(slot: Int, item: () -> ItemStack) = setItem(slot, item.invoke())
